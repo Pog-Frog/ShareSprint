@@ -1,0 +1,16 @@
+{
+  "name": "sharesprint",
+  "version": "1.0.0",
+  "description": "social network website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\"",
+    "install": "cd frontend && npm install && cd .. && cd backend && npm install && cd .."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

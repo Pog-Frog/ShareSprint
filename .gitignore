@@ -1,0 +1,67 @@
+# Logs #
+/logs
+*.log
+*.log*
+
+# Node files #
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+
+# OS generated files #
+.DS_Store
+Thumbs.db
+.tmp/
+src/api/schema.gql
+
+# Typing #
+typings/
+
+# Dist #
+dist/
+tsconfig.build.json
+
+# IDE #
+.idea/
+*.swp
+.awcache
+.vscode/
+
+# Generated source-code #
+src/**/*.js
+src/**/*.js.map
+!src/public/**/*
+test/**/*.js
+test/**/*.js.map
+coverage/
+!test/preprocessor.js
+mydb.sql
+
+# dependencies
+/.pnp
+.pnp.js
+
+# production
+/build
+.next
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
