@@ -6,12 +6,12 @@ import { UserModel } from "../models/user.model";
 
 @Service()
 export class NotificationService {
-    public async addNotification(UserID: String, notificationData: Notification): Promise<Notification> {
+    public async addNotification(notificationData: Notification): Promise<Notification> {
+        const findUser = await UserModel.findById(notificationData.receiver);
+        if(!findUser) throw new HttpException(409, "Notification receiver not found");
+
         const createdNotification: Notification = await NotificationModel.create({ ...notificationData });
         if(!createdNotification) throw new HttpException(409, "Notification not created");
-
-        const findUser = await UserModel.findById(UserID);
-        if(!findUser) throw new HttpException(409, "User not found");
 
         findUser.Notifications.push(createdNotification);
         await findUser.save();

@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import { HttpException } from "../exceptions/httpsExceptions";
 import { PostModel } from "../models/post.model";
 import { CommentModel } from "../models/comment.model";
+import { Comment } from "../interfaces/comment.interface";
 import { Post } from "../interfaces/post.interface";
 import { UserModel } from "../models/user.model";
 
@@ -19,11 +20,11 @@ export class PostService {
     }
 
     public async createPost(postData: Post): Promise<Post> {
-        const createdPost: Post = await PostModel.create({ ...postData });
-        if(!createdPost) throw new HttpException(409, "Post not created");
-
         const findUser = await UserModel.findById(postData.author);
         if(!findUser) throw new HttpException(409, "User not found");
+
+        const createdPost: Post = await PostModel.create({ ...postData });
+        if(!createdPost) throw new HttpException(409, "Post not created");
 
         findUser.posts.push(createdPost);
         await findUser.save();
@@ -70,6 +71,6 @@ export class PostService {
         findPost.comments.push(createdComment);
         await findPost.save();
         
-        return findPost;
+        return findPost.populate('comments');
     }
 }

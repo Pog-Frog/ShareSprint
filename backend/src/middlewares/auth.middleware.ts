@@ -10,7 +10,7 @@ const getAuthorization = (req: { cookies: { [x: string]: any; }; headers: { [x: 
     if (cookies) return cookies;
 
     const headers = req.headers["authorization"];
-    if (headers) return headers;
+    if (headers) return headers.split('Bearer ')[1];
 
     return null;
 }
