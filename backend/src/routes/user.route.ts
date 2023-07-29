@@ -5,8 +5,11 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 import { validationMiddleware } from "../middlewares/validation.middleware";
 import { UpdateUserDto } from "../models/dtos/user.dto";
 
+
+export const user_path = "/api/users";
+
 export class UserRoute implements Routes {
-    public path = "/api/users";
+    public path = user_path;
     public router = Router();
     public userController = new UserController();
 

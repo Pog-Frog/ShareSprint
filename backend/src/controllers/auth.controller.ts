@@ -32,9 +32,9 @@ export class AuthController {
     public logout = async (req: RequestWithUser, res: Response, next: NextFunction) => {
         try {
             const userData: User = req.user;
-            const findUser: User = await this.auth.logout(userData);
+            const logout_message = await this.auth.logout(userData);
             res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
-            res.status(200).json({ data: findUser, message: "logout" });
+            res.status(200).json({ message: logout_message });
         } catch (error) {
             next(error);
         }

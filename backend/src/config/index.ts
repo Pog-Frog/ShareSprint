@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 config({ path: '.env' });
 
 export const PORT = process.env.PORT || 8080;
+export const URL = process.env.URL || 'http://localhost';
 export const JWT_SECRET = process.env.JWT_SECRET || 'SUS';
 export const DB_HOST = process.env.MONGO_URI || 'localhost';
 export const DB_NAME = process.env.DB_NAME || 'social_network';

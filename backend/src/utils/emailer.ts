@@ -1,5 +1,7 @@
 import { createTransport } from "nodemailer"
-import { MAIL_HOST, MAIL_USER, MAIL_PASS, MAIL_PORT, MAIL_PROVIDER, COMPANY_NAME, MAIL_TEMPLATE_LOCATION, FRONTEND_URL } from "../config"
+import { MAIL_HOST, MAIL_USER, MAIL_PASS, MAIL_PORT, MAIL_PROVIDER, COMPANY_NAME, MAIL_TEMPLATE_LOCATION, URL, PORT } from "../config"
+import { user_path } from "../routes/user.route"
+
 
 const transporter = createTransport({
     service: MAIL_HOST,
@@ -47,7 +49,7 @@ export const sendEmailVerification = async (name: string, to: string, token: str
         template: 'verify-email',
         context: {
             title: `${COMPANY_NAME} - Verify your email`,
-            message: `Hi ${name},\n\nPlease verify your email by clicking the link: ${FRONTEND_URL}/verify-email/${token}/${to}`,
+            message: `Hi ${name}, please click on the link below to verify your email address: ${URL}:${PORT}${user_path}/verify-email/${to}/${token}`,
             company: COMPANY_NAME
         }
     }).then((info) => {

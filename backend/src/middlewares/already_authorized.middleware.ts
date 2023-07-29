@@ -15,7 +15,8 @@ const getAuthorization = (req: { cookies: { [x: string]: any; }; headers: { [x: 
     return null;
 }
 
-export const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+//for the login and signup routes
+export const alreadyAuthorizedMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
         const AUTHORIZATION = getAuthorization(req);
 
@@ -23,15 +24,14 @@ export const authMiddleware = async (req: RequestWithUser, res: Response, next: 
             const { _id } = await (verify(AUTHORIZATION, JWT_SECRET)) as DataStoredInToken;
             const findUser = await UserModel.findById(_id);
             if (findUser) {
-                req.user = findUser;
-                next();
+                next(new HttpException(401, 'You are already logged in'));
             } else {
-                next(new HttpException(401, 'Invalid authentication token'));
+                next();
             }
         } else {
-            next(new HttpException(401, 'Authentication token missing'));
+            next();
         }
     } catch (error) {
-        next(new HttpException(401, 'Invalid authentication token'));
+        next();
     }
 }

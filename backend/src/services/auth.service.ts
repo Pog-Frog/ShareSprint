@@ -31,6 +31,9 @@ export class AuthService {
         const findUser: User = await UserModel.findOne({ email: userData.email });
         if (findUser) throw new HttpException(409, `The email ${userData.email} already exists`);
 
+        const findUsername: User = await UserModel.findOne({ username: userData.username });
+        if (findUsername) throw new HttpException(409, `The username ${userData.username} already exists`);
+
         const hashedPassword = await hash(userData.password, 10);
         const createdUser: User = await UserModel.create({
             ...userData,
@@ -42,13 +45,13 @@ export class AuthService {
             throw new HttpException(409, "Email Verification not sent");
         }).then(async () => {
             const verificationToken = await VerificationTokenModel.create({
-                token: token, 
+                token: token,
                 email: createdUser.email
             }).catch((err) => {
                 throw new HttpException(409, "Email Verification not sent");
             });
         });
-        
+
         return createdUser;
     }
 
@@ -59,7 +62,6 @@ export class AuthService {
         const isPasswordMatching: boolean = await compare(userData.password, findUser.password);
         if (!isPasswordMatching) throw new HttpException(409, "Invalid email or password");
 
-        //check if the email is verified
         if (!findUser.email_verified) throw new HttpException(409, "Please verify your email");
 
         const tokenData = createToken(findUser);
@@ -68,10 +70,10 @@ export class AuthService {
         return { findUser, cookie, tokenData };
     }
 
-    public async logout(userData: User): Promise<User> {
+    public async logout(userData: User) {
         const findUser: User = await UserModel.findOne({ email: userData.email });
         if (!findUser) throw new HttpException(409, `The email you entered doesn't belong to an account.`);
 
-        return findUser;
+        return "Logged out successfully";
     }
 }
