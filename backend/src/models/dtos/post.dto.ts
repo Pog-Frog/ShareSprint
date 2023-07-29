@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreatePostDto {
     @IsString()
@@ -6,6 +6,7 @@ export class CreatePostDto {
     body: string;
 
     @IsString()
+    @IsOptional()
     image: string;
 
     @IsString()
@@ -13,9 +14,11 @@ export class CreatePostDto {
     author: string;
 
     @IsString()
+    @IsOptional()
     likes: string[];
 
     @IsString()
+    @IsOptional()
     comments: string[];
 }
 
@@ -25,6 +28,7 @@ export class UpdatePostDto {
     body: string;
 
     @IsString()
+    @IsOptional()
     image: string;
 
     @IsString()
@@ -32,8 +36,10 @@ export class UpdatePostDto {
     author: string;
 
     @IsString()
+    @IsOptional()
     likes: string[];
 
     @IsString()
+    @IsOptional()
     comments: string[];
 }

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, MinLength, IsEmail, MaxLength } from "class-validator";
+import { IsString, IsNotEmpty, MinLength, IsEmail, MaxLength, IsOptional } from "class-validator";
 
 export class CreateUserDto {
     @IsString()
@@ -17,35 +17,41 @@ export class CreateUserDto {
     public email: string;
 
     @IsString()
+    @IsOptional()
     bio: string;
 
     @IsString()
+    @IsOptional()
     image: string;
 
     @IsString()
+    @IsOptional()
     cover_image: string;
 
     @IsString()
+    @IsOptional()
     folowers: string[];
 
     @IsString()
+    @IsOptional()
     has_notifications: boolean;
 
     @IsString()
+    @IsOptional()
     posts: string[];
 
     @IsString()
+    @IsOptional()
     comments: string[];
 
     @IsString()
+    @IsOptional()
     Notifications: string[];
 }
 
 export class LoginUserDto {
     @IsEmail()
     @IsNotEmpty()
-    @MinLength(8)
-    @MaxLength(20)
     email: string;
 
     @IsString()
@@ -71,26 +77,34 @@ export class UpdateUserDto {
     public email: string;
 
     @IsString()
+    @IsOptional()
     bio: string;
 
     @IsString()
+    @IsOptional()
     image: string;
 
     @IsString()
+    @IsOptional()
     cover_image: string;
 
     @IsString()
+    @IsOptional()
     folowers: string[];
 
     @IsString()
+    @IsOptional()
     has_notifications: boolean;
 
     @IsString()
+    @IsOptional()
     posts: string[];
 
     @IsString()
+    @IsOptional()
     comments: string[];
 
     @IsString()
+    @IsOptional()
     Notifications: string[];
 }

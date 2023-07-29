@@ -1,15 +1,11 @@
-import express from 'express';
+import { App } from "./app";
+import { AuthRoute } from "./routes/auth.route";
+import { UserRoute } from "./routes/user.route";
+import { PostRoute } from "./routes/post.route";
+import { NotificationRoute } from "./routes/notification.route";
+import { CommentRoute } from "./routes/comment.route";
 
-const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-    }
-);
+const app = new App([new AuthRoute(), new UserRoute(), new PostRoute(), new NotificationRoute(), new CommentRoute()]);
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-    }
-);
-
-export default app;
+app.listen();

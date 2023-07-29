@@ -1,0 +1,35 @@
+
+# User Signup
+POST http://localhost:8080/api/signup
+Content-Type: application/json
+
+{
+    "username": "John Doe",
+    "email": "johndoe@gmail.com",
+    "password": "12345678"
+}
+
+###
+# User verify
+GET http://localhost:8080/api/users/verify-email/johndoe@gmail.com/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGM0N2ExMGZiY2IzYjc2MzM1YzRkMWYiLCJpYXQiOjE2OTA1OTc5MDQsImV4cCI6MTY5MDU5OTcwNH0.5ymA1sdRuYRVh8-7XQb9gBIoYa-JsNWjXyV8_ajU5WE
+Content-Type: application/json
+
+{
+    "email": "johndoe@gmail.com",
+    "password": "12345678"
+}
+
+###
+# User Login
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+    "email": "johndoe@gmail.com",
+    "password": "12345678"
+}
+
+###
+# User Logout
+POST http://localhost:8080/api/logout
+Content-Type: application/json

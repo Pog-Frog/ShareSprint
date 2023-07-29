@@ -4,7 +4,7 @@ import { RequestWithUser } from "../interfaces/auth.interface";
 import { User } from "../interfaces/user.interface";
 import { AuthService } from "../services/auth.service";
 
-export class AuthController{
+export class AuthController {
     public auth = Container.get(AuthService);
 
     public signup = async (req: Request, res: Response, next: NextFunction) => {
