@@ -1,5 +1,6 @@
 import { model, Schema, Document } from 'mongoose';
 import { User } from "../interfaces/user.interface";
+import { on } from 'events';
 
 const UserSchema: Schema = new Schema({
     username: { type: String, required: true, unique: true },

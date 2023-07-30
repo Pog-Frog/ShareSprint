@@ -20,9 +20,20 @@ export class PostController {
 
     public getPostById = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const postId: string = req.params.id;
+            const postId: string = req.params.postId;
             const post: Post = await this.post.findPostById(postId);
             res.status(200).json({ data: post, message: "getPostById" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public getPostsByUser = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const username: string = req.params.username;
+            const posts: Post[] = await this.post.findPostByUser(username);
+
+            res.status(200).json({ data: posts, message: "getPostByUser" });
         } catch (error) {
             next(error);
         }
@@ -32,8 +43,9 @@ export class PostController {
         try {
             const postData: Post = req.body;
             if (!postData.author) {
-                const userId = TokenUtils.getUserIDFromToken(req);
+                const userId = await TokenUtils.getUserIDFromToken(req);
                 if (!userId) throw new HttpException(409, "Invalid token");
+
                 postData.author = userId;
             }
             const createdPost: Post = await this.post.createPost(postData);
@@ -57,8 +69,8 @@ export class PostController {
     public deletePost = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const postId: string = req.params.postId;
-            const deletedPost: Post = await this.post.deletePost(postId);
-            res.status(200).json({ data: deletedPost, message: "deletePost" });
+            const deletedPost = await this.post.deletePost(postId);
+            res.status(200).json({ message: deletedPost });
         } catch (error) {
             next(error);
         }
@@ -67,20 +79,14 @@ export class PostController {
     public updatePostLikes = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const postId: string = req.params.postId;
-            const postData: Post = req.body;
-            const updatedPost: Post = await this.post.updatePostLikes(postId, postData);
-            res.status(200).json({ data: updatedPost, message: "updatePostLikes" });
-        } catch (error) {
-            next(error);
-        }
-    }
+            const userId = await TokenUtils.getUserIDFromToken(req);
 
-    public getPostComments = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const postId: string = req.params.postId;
-            const post: Post = await this.post.findPostById(postId);
-            const comments = post.comments;
-            res.status(200).json({ data: comments, message: "getPostComments" });
+            if (!userId) throw new HttpException(409, "Invalid token");
+
+            const updatedPost = await this.post.updatePostLikes(postId, userId);
+            if (!updatedPost) throw new HttpException(409, "Post not found");
+
+            res.status(200).json({ message: updatedPost });
         } catch (error) {
             next(error);
         }
@@ -90,12 +96,14 @@ export class PostController {
         try {
             const postId: string = req.params.postId;
             const commentData: Comment = req.body;
+            const userId = await TokenUtils.getUserIDFromToken(req);
+            if (!userId) throw new HttpException(409, "Invalid token");
+
             if (!commentData.author) {
-                const userId = TokenUtils.getUserIDFromToken(req);
-                if (!userId) throw new HttpException(409, "Invalid token");
                 commentData.author = userId;
             }
-            const post: Post = await this.post.createPostComment(postId, commentData);
+
+            const post: Post = await this.post.createPostComment(postId, userId, commentData);
             res.status(201).json({ data: post, message: "createPostComment" });
         } catch (error) {
             next(error);

@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional } from "class-validator";
+import { Comment } from "../../interfaces/comment.interface";
 
 export class CreatePostDto {
     @IsString()
@@ -10,6 +11,7 @@ export class CreatePostDto {
     image: string;
 
     @IsString()
+    @IsOptional()   
     @IsNotEmpty()
     author: string;
 
@@ -19,7 +21,7 @@ export class CreatePostDto {
 
     @IsString()
     @IsOptional()
-    comments: string[];
+    comments: Comment[];
 }
 
 export class UpdatePostDto {
@@ -33,6 +35,7 @@ export class UpdatePostDto {
 
     @IsString()
     @IsNotEmpty()
+    @IsOptional()
     author: string;
 
     @IsString()
@@ -41,5 +44,5 @@ export class UpdatePostDto {
 
     @IsString()
     @IsOptional()
-    comments: string[];
+    comments: Comment[];
 }

@@ -4,8 +4,8 @@ import { user_path } from "../routes/user.route"
 
 
 const transporter = createTransport({
-    service: MAIL_HOST,
-    host: MAIL_PROVIDER,
+    service: MAIL_PROVIDER,
+    host: MAIL_HOST,
     port: MAIL_PORT,
     auth: {
         user: MAIL_USER,

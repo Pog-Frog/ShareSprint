@@ -1,4 +1,7 @@
 import { IsString, IsNotEmpty, MinLength, IsEmail, MaxLength, IsOptional } from "class-validator";
+import { Post } from "../../interfaces/post.interface";
+import { Notification } from "../../interfaces/notificaiton.interface";
+import { Comment } from "../../interfaces/comment.interface";
 
 export class CreateUserDto {
     @IsString()
@@ -38,15 +41,15 @@ export class CreateUserDto {
 
     @IsString()
     @IsOptional()
-    posts: string[];
+    posts: Post[];
 
     @IsString()
     @IsOptional()
-    comments: string[];
+    comments: Comment[];
 
     @IsString()
     @IsOptional()
-    Notifications: string[];
+    Notifications: Notification[];
 }
 
 export class LoginUserDto {
@@ -98,13 +101,13 @@ export class UpdateUserDto {
 
     @IsString()
     @IsOptional()
-    posts: string[];
+    posts: Post[];
 
     @IsString()
     @IsOptional()
-    comments: string[];
+    comments: Comment[];
 
     @IsString()
     @IsOptional()
-    Notifications: string[];
+    Notifications: Notification[];
 }

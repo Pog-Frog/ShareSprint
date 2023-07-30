@@ -16,11 +16,13 @@ export class PostRoute implements Routes {
     }
 
     private initializeRoutes() {
+        this.router.get(`${this.path}/id/:postId`, this.postController.getPostById);
+        this.router.get(`${this.path}/user/:username`, this.postController.getPostsByUser);
         this.router.get(`${this.path}`, this.postController.getPosts);
-        this.router.get(`${this.path}/:postId`, this.postController.getPostById);
         this.router.post(`${this.path}`, authMiddleware, validationMiddleware(CreatePostDto), this.postController.createPost);
-        this.router.put(`${this.path}/:postId`, authMiddleware, validationMiddleware(UpdatePostDto), this.postController.updatePost);
-        this.router.delete(`${this.path}/:postId`, authMiddleware, this.postController.deletePost);
-        this.router.post(`${this.path}/:postId/comments`, authMiddleware, validationMiddleware(CreateCommentDto), this.postController.createPostComment);
+        this.router.put(`${this.path}/id/:postId`, authMiddleware, validationMiddleware(UpdatePostDto), this.postController.updatePost);
+        this.router.delete(`${this.path}/id/:postId`, authMiddleware, this.postController.deletePost);
+        this.router.post(`${this.path}/id/:postId/comments`, authMiddleware, validationMiddleware(CreateCommentDto), this.postController.createPostComment);
+        this.router.put(`${this.path}/id/:postId/likes`, authMiddleware, this.postController.updatePostLikes);
     }
 }

@@ -5,6 +5,7 @@ import { CommentModel } from "../models/comment.model";
 import { Comment } from "../interfaces/comment.interface";
 import { Post } from "../interfaces/post.interface";
 import { UserModel } from "../models/user.model";
+import { User } from "../interfaces/user.interface";
 
 @Service()
 export class PostService {
@@ -17,6 +18,15 @@ export class PostService {
         const findPost: Post = await PostModel.findById(postId).populate('author').populate('comments').populate('likes');
         if (!findPost) throw new HttpException(409, "Post not found");
         return findPost;
+    }
+
+    public async findPostByUser(username: string): Promise<Post[]> {
+        const user: User = await UserModel.findOne({ username: username }).populate('posts');
+        if (!user) throw new HttpException(409, "User not found");
+
+        const posts: Post[] = user.posts;
+
+        return posts;
     }
 
     public async createPost(postData: Post): Promise<Post> {
@@ -41,27 +51,36 @@ export class PostService {
         return updatedPost;
     }
 
-    public async deletePost(postId: string): Promise<Post> {
+    public async deletePost(postId: string) {
         const findPost: Post = await this.findPostById(postId);
         if (!findPost) throw new HttpException(409, "Post not found");
 
         const deletedPost: Post = await PostModel.findByIdAndDelete(postId);
         if(!deletedPost) throw new HttpException(409, "Post not deleted");
 
-        return deletedPost;
+        return "post deleted";
     }
 
-    public async updatePostLikes(postId: string, postData: Post): Promise<Post> {
-        const findPost: Post = await this.findPostById(postId);
+    public async updatePostLikes(postId: string, userId: string){
+        const findPost = await PostModel.findById(postId);
         if (!findPost) throw new HttpException(409, "Post not found");
 
-        const updatedPost: Post = await PostModel.findByIdAndUpdate(postId, postData, { new: true });
-        if(!updatedPost) throw new HttpException(409, "Post not updated");
+        if(findPost.likes.includes(userId)) {
+            if(findPost.likes.length > 0) {
+                const index = findPost.likes.indexOf(userId);
+                findPost.likes.splice(index, 1);
+            }else{
+                findPost.likes = [];
+            }
+        } else {
+            findPost.likes.push(userId);
+        }
+        findPost.save();
 
-        return updatedPost;
+        return "post likes updated";
     }
 
-    public async createPostComment(postId: string, CommentData: Comment): Promise<Post> {
+    public async createPostComment(postId: string, userId: string, CommentData: Comment): Promise<Post> {
         const findPost = await PostModel.findById(postId);
         if (!findPost) throw new HttpException(409, "Post not found");
 
@@ -70,6 +89,10 @@ export class PostService {
 
         findPost.comments.push(createdComment);
         await findPost.save();
+
+        const user = await UserModel.findById(userId);
+        user.comments.push(createdComment);
+        await user.save();
         
         return findPost.populate('comments');
     }
