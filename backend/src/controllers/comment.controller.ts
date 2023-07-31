@@ -2,6 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import { Container } from "typedi";
 import { CommentService } from "../services/comment.service";
 import { Comment } from "../interfaces/comment.interface";
+import { TokenUtils } from "../utils/token.utils";
 
 export class CommentController {
     public comment = Container.get(CommentService);
@@ -20,7 +21,10 @@ export class CommentController {
         try {
             const commentId: string = req.params.commentId;
             const commentData: Comment = req.body;
-            const updatedComment: Comment = await this.comment.updateComment(commentId, commentData);
+
+            const currentId = await TokenUtils.getUserIDFromToken(req);
+
+            const updatedComment: Comment = await this.comment.updateComment(commentId, commentData, currentId);
             res.status(200).json({ data: updatedComment, message: "updateComment" });
         } catch (error) {
             next(error);

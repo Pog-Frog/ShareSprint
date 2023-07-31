@@ -10,7 +10,7 @@ const UserSchema: Schema = new Schema({
     image: { type: String, required: false },
     cover_image: { type: String, required: false },
     password: { type: String, required: true },
-    folowers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    followers: [{ type: Schema.Types.ObjectId, ref: 'User', required: false }],
     has_notifications: { type: Boolean, default: false, required: false },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],

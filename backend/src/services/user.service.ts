@@ -3,6 +3,7 @@ import { HttpException } from "../exceptions/httpsExceptions";
 import { UserModel } from "../models/user.model";
 import { User } from "../interfaces/user.interface";
 
+
 @Service()
 export class UserService {
     public async updateUser(userId: string, userData: User): Promise<User> {
@@ -54,5 +55,32 @@ export class UserService {
         if (!users) throw new HttpException(409, "Users not found");
 
         return users;
+    }
+
+    public async followUser(userId: string, followerId: string): Promise<string> {
+        const getUser = await UserModel.findById(userId);
+        if (!getUser) throw new HttpException(409, "User not found");
+
+        const getFollower: User = await UserModel.findById(followerId);
+        if (!getFollower) throw new HttpException(409, "Follower not found");
+
+        console.log(getUser.followers);
+
+        if (getUser.followers.includes(getFollower._id)) {
+            if (getUser.followers.length > 0) {
+                const index = getUser.followers.indexOf(getFollower._id);
+                getUser.followers.splice(index, 1);
+            } else {
+                getUser.followers = [];
+            }
+            await getUser.save();
+
+            return "User unfollowed";
+        }
+
+        getUser.followers.push(getFollower._id);
+        await getUser.save();
+
+        return "User followed";
     }
 }

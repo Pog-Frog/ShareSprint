@@ -33,7 +33,7 @@ export class CreateUserDto {
 
     @IsString()
     @IsOptional()
-    folowers: string[];
+    followers: string[];
 
     @IsString()
     @IsOptional()
@@ -73,10 +73,12 @@ export class UpdateUserDto {
     @IsString()
     @IsNotEmpty()
     @MinLength(8)
+    @IsOptional()
     password: string;
 
     @IsEmail()
     @IsNotEmpty()
+    @IsOptional()
     public email: string;
 
     @IsString()
@@ -93,7 +95,7 @@ export class UpdateUserDto {
 
     @IsString()
     @IsOptional()
-    folowers: string[];
+    followers: string[];
 
     @IsString()
     @IsOptional()

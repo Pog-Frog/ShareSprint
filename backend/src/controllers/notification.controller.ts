@@ -3,6 +3,7 @@ import { Container } from "typedi";
 import { RequestWithUser } from "../interfaces/auth.interface";
 import { Notification } from "../interfaces/notificaiton.interface";
 import { NotificationService } from "../services/notification.service";
+import { TokenUtils } from "../utils/token.utils";
 
 export class NotificationController {
     public notification = Container.get(NotificationService);
@@ -21,7 +22,10 @@ export class NotificationController {
         try {
             const notificationId: string = req.params.notificationId;
             const notificationData: Notification = req.body;
-            const updatedNotification: Notification = await this.notification.updateNotification(notificationId, notificationData);
+
+            const currentId = await TokenUtils.getUserIDFromToken(req);
+
+            const updatedNotification: Notification = await this.notification.updateNotification(notificationId, notificationData, currentId);
             res.status(200).json({ data: updatedNotification, message: "updateNotification" });
         } catch (error) {
             next(error);

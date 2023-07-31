@@ -11,9 +11,11 @@ export class CommentService {
         return findComment;
     }
 
-    public async updateComment(commentId: string, commentData: Comment): Promise<Comment> {
-        const findComment: Comment = await this.findCommentById(commentId);
+    public async updateComment(commentId: string, commentData: Comment, currentId: string): Promise<Comment> {
+        const findComment: Comment = await CommentModel.findById(commentId);
         if (!findComment) throw new HttpException(409, "Comment not found");
+
+        if (findComment.author.toString() !== currentId) throw new HttpException(409, "Unauthorized");
 
         const updatedComment: Comment = await CommentModel.findByIdAndUpdate(commentId, { ...commentData }, { new: true });
         if(!updatedComment) throw new HttpException(409, "Comment not updated");

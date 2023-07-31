@@ -21,10 +21,10 @@ export class PostService {
     }
 
     public async findPostByUser(username: string): Promise<Post[]> {
-        const user: User = await UserModel.findOne({ username: username }).populate('posts');
+        const user: User = await UserModel.findOne({ username: username });
         if (!user) throw new HttpException(409, "User not found");
 
-        const posts: Post[] = user.posts;
+        const posts: Post[] = await PostModel.find({ author: user._id }).populate('author').populate('comments').populate('likes');
 
         return posts;
     }
@@ -36,14 +36,16 @@ export class PostService {
         const createdPost: Post = await PostModel.create({ ...postData });
         if(!createdPost) throw new HttpException(409, "Post not created");
 
-        findUser.posts.push(createdPost);
+        findUser.posts.push(createdPost._id);
         await findUser.save();
         return createdPost;
     }
 
-    public async updatePost(postId: string, postData: Post): Promise<Post> {
-        const findPost: Post = await this.findPostById(postId);
+    public async updatePost(postId: string, postData: Post, currentId: string): Promise<Post> {
+        const findPost: Post = await PostModel.findById(postId);
         if (!findPost) throw new HttpException(409, "Post not found");
+
+        if (findPost.author.toString() !== currentId) throw new HttpException(409, "Unauthorized");
 
         const updatedPost: Post = await PostModel.findByIdAndUpdate(postId, { ...postData }, { new: true });
         if(!updatedPost) throw new HttpException(409, "Post not updated");
@@ -91,7 +93,7 @@ export class PostService {
         await findPost.save();
 
         const user = await UserModel.findById(userId);
-        user.comments.push(createdComment);
+        user.comments.push(createdComment._id);
         await user.save();
         
         return findPost.populate('comments');

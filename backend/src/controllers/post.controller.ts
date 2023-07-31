@@ -59,7 +59,10 @@ export class PostController {
         try {
             const postId: string = req.params.postId;
             const postData: Post = req.body;
-            const updatedPost: Post = await this.post.updatePost(postId, postData);
+
+            const currentId = await TokenUtils.getUserIDFromToken(req);
+
+            const updatedPost: Post = await this.post.updatePost(postId, postData, currentId);
             res.status(200).json({ data: updatedPost, message: "updatePost" });
         } catch (error) {
             next(error);

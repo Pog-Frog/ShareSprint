@@ -7,6 +7,7 @@ import { VerificationTokenModel } from "../models/verification_tokens.model";
 import { UserModel } from "../models/user.model";
 import { TokenUtils } from "../utils/token.utils";
 
+
 export class UserController {
     public user = Container.get(UserService);
 
@@ -14,6 +15,12 @@ export class UserController {
         try {
             const userId: string = req.params.userId;
             const userData: User = req.body;
+            const currentId = await TokenUtils.getUserIDFromToken(req);
+
+            if (currentId !== userId) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
             const updatedUser: User = await this.user.updateUser(userId, userData);
             res.status(200).json({ data: updatedUser, message: "updateUser" });
         } catch (error) {
@@ -84,14 +91,31 @@ export class UserController {
             next(error);
         }
     }
-    
+
 
     public getCurrentUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
         try {
             const userId: string = await TokenUtils.getUserIDFromToken(req);
             const findUser: User = await UserModel.findById(userId);
-            
+
             res.status(200).json({ data: findUser, message: "getCurrentUser" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public followUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+        try {
+            const followUserId: string = await TokenUtils.getUserIDFromToken(req);
+            const userId: string = req.params.userId;
+
+            if (userId === followUserId) {
+                return res.status(400).json({ message: "You can't follow yourself" });
+            }
+
+            const follow = await this.user.followUser(userId, followUserId);
+
+            res.status(200).json({ message: follow });
         } catch (error) {
             next(error);
         }
