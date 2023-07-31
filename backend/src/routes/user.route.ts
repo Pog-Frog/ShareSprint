@@ -20,9 +20,11 @@ export class UserRoute implements Routes {
 
     private initializeRoutes() {
         this.router.get(`${this.path}/:email`, authMiddleware, this.userController.getUserbyEmail);
-        this.router.get(`${this.path}/id/:id`, authMiddleware, this.userController.getUserbyId);
-        this.router.put(`${this.path}/:id`, authMiddleware, validationMiddleware(UpdateUserDto), this.userController.updateUser);
-        this.router.delete(`${this.path}/:id`, authMiddleware, this.userController.deleteUser);
+        this.router.get(`${this.path}/id/:userId`, authMiddleware, this.userController.getUserbyId);
+        this.router.put(`${this.path}/:userId`, authMiddleware, validationMiddleware(UpdateUserDto), this.userController.updateUser);
+        this.router.delete(`${this.path}/:userId`, authMiddleware, this.userController.deleteUser);
         this.router.get(`${this.path}/verify-email/:email/:token`, alreadyAuthorizedMiddleware, this.userController.verifyUser);
+        this.router.get(`${this.path}/user/me`, authMiddleware, this.userController.getCurrentUser);
+        this.router.get(`${this.path}`, authMiddleware, this.userController.getAllUsers);
     }
 }

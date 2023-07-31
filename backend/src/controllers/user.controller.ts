@@ -5,6 +5,7 @@ import { User } from "../interfaces/user.interface";
 import { UserService } from "../services/user.service";
 import { VerificationTokenModel } from "../models/verification_tokens.model";
 import { UserModel } from "../models/user.model";
+import { TokenUtils } from "../utils/token.utils";
 
 export class UserController {
     public user = Container.get(UserService);
@@ -70,6 +71,27 @@ export class UserController {
             const email: string = req.params.email;
             const findUser: User = await this.user.findUserByEmail(email);
             res.status(200).json({ data: findUser, message: "getUserbyEmail" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const users: User[] = await this.user.getAllUsers();
+            res.status(200).json({ data: users, message: "getAllUsers" });
+        } catch (error) {
+            next(error);
+        }
+    }
+    
+
+    public getCurrentUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+        try {
+            const userId: string = await TokenUtils.getUserIDFromToken(req);
+            const findUser: User = await UserModel.findById(userId);
+            
+            res.status(200).json({ data: findUser, message: "getCurrentUser" });
         } catch (error) {
             next(error);
         }
