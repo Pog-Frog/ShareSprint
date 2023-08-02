@@ -31,15 +31,15 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, icon: Icon, href, onCl
                 relative
                 hidden 
                 lg:flex 
-                items-row 
-                gap-4 
-                p-4 
+                items-center 
+                gap-4
+                p-4
                 rounded-full 
                 hover:bg-slate-300 
                 hover:bg-opacity-10 
                 cursor-pointer
-                items-center
             ">
+                <Icon size={24} color="white" />
                 <p className="hidden lg:block text-white text-xl">
                     {label}
                 </p>
