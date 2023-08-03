@@ -28,7 +28,6 @@ const LoginModal = () => {
       await AuthService.login({ email, password }).then((res) => {
         dispatch(showSuccess('You have successfully logged in!'))
         dispatch(setToken(res.token));
-        console.log(res.token);
         loginModal.onClose();
 
       }).catch((err) => {

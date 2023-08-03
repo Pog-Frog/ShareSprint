@@ -37,7 +37,7 @@ const RegisterModal = () => {
 
       await AuthService.register({ email, password, username }).then((res) => {
         dispatch(showSuccess('You have successfully registered!'));
-        registerModal.onClose();
+        onToggle();
       }).catch((err) => {
         dispatch(showError(err.message));
       });
@@ -49,7 +49,7 @@ const RegisterModal = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, email, password, registerModal, username]);
+  }, [dispatch, email, onToggle, password, username]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">

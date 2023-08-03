@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 
 const SidebarPostButton = () => {
 
-    const router = useRouter();
-
     const loginModal = useLoginModal();
 
     const isAuthenticated = useSelector(selectAuthState);
