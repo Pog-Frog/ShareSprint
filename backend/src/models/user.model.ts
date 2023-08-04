@@ -1,6 +1,7 @@
 import { model, Schema, Document } from 'mongoose';
 import { User } from "../interfaces/user.interface";
 import { on } from 'events';
+import { profile } from 'console';
 
 const UserSchema: Schema = new Schema({
     username: { type: String, required: true, unique: true },
@@ -14,7 +15,9 @@ const UserSchema: Schema = new Schema({
     has_notifications: { type: Boolean, default: false, required: false },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-    notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }]
+    notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
+    coverImage: { type: String, required: false },
+    profileImage: { type: Schema.Types.ObjectId, ref: 'Profile' }
 }, {
     timestamps: true
 });

@@ -50,6 +50,14 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     Notifications: Notification[];
+
+    @IsString()
+    @IsOptional()
+    coverImage: string;
+
+    @IsString()
+    @IsOptional()
+    profileImage: string;
 }
 
 export class LoginUserDto {
@@ -112,4 +120,12 @@ export class UpdateUserDto {
     @IsString()
     @IsOptional()
     Notifications: Notification[];
+
+    @IsString()
+    @IsOptional()
+    coverImage: string;
+
+    @IsString()
+    @IsOptional()
+    profileImage: string;
 }
