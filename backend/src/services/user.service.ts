@@ -37,14 +37,20 @@ export class UserService {
     }
 
     public async findUserById(userId: string): Promise<User> {
-        const findUser: User = await UserModel.findById(userId).populate('posts').populate('comments').populate('notifications');
+        let findUser: User = await UserModel.findById(userId).populate('posts').populate('comments').populate('notifications');
+        const followingCount  = await UserModel.countDocuments({followers: userId});
+        findUser = findUser.toJSON();
+        findUser.followingCount = followingCount;
         if (!findUser) throw new HttpException(409, "User not found");
 
         return findUser;
     }
 
     public async findUserByEmail(email: string): Promise<User> {
-        const findUser: User = await UserModel.findOne({ email: email }).populate('posts').populate('comments').populate('notifications');
+        let findUser: User = await UserModel.findOne({ email: email }).populate('posts').populate('comments').populate('notifications');
+        const followingCount  = await UserModel.countDocuments({followers: findUser._id});
+        findUser = findUser.toJSON();
+        findUser.followingCount = followingCount;
         if (!findUser) throw new HttpException(409, "User not found");
 
         return findUser;

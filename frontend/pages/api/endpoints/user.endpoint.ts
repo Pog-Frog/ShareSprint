@@ -8,32 +8,32 @@ export const UserEndpoint = {
     },
 
     getUserById: {
-        url: `${DOMAIN}/users/id/${'userId'}`,
+        url: `${DOMAIN}/users/id/`,
         method: 'GET'
     },
 
     getUserByEmail: {
-        url: `${DOMAIN}/users/${'email'}`,
+        url: `${DOMAIN}/users/`,
         method: 'GET'
     },
 
     updateUser: {
-        url: `${DOMAIN}/users/${'userId'}`,
+        url: `${DOMAIN}/users/`,
         method: 'PUT'
     },
 
     deleteUser: {
-        url: `${DOMAIN}/users/${'userId'}`,
+        url: `${DOMAIN}/users/`,
         method: 'DELETE'
     },
 
     verifyUser: {
-        url: `${DOMAIN}/users/verify-email/${'email'}/${'token'}`,
+        url: `${DOMAIN}/users/verify-email/`, //${DOMAIN}/users/verify-email/${'email'}/${'token'}
         method: 'GET'
     },
 
     getCurrentUser: {
-        url: `${DOMAIN}/users/me`,
+        url: `${DOMAIN}/users/user/me`,
         method: 'GET'
     }
 }

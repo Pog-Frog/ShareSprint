@@ -5,7 +5,7 @@ import SidebarLogo from './SidebarLogo';
 import SidebarItem from './SidebarItem';
 import SidebarPostButton from './SidebarButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteToken, selectAuthState } from '@/redux/reducers/auth.reducer';
+import { deleteEmail, deleteToken, selectAuthState } from '@/redux/reducers/auth.reducer';
 import { useCallback } from 'react';
 
 
@@ -15,6 +15,7 @@ const Sidebar = () => {
             icon: BsHouseFill,
             label: 'Home',
             href: '/',
+            auth: false,
         },
         {
             icon: BsBellFill,
@@ -26,15 +27,17 @@ const Sidebar = () => {
             icon: FaUser,
             label: 'Profile',
             href: '/user/123',
+            auth: true,
         },
     ]
 
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(selectAuthState);
     const token = localStorage.getItem('token');
-    
+
     const logoutHandler = useCallback(() => {
         dispatch(deleteToken());
+        dispatch(deleteEmail());
     }, [dispatch]);
 
     return (
@@ -47,10 +50,11 @@ const Sidebar = () => {
                             key={item.label}
                             icon={item.icon}
                             label={item.label}
+                            auth={item.auth}
                             href={item.href}
                         />
                     ))}
-                    {isAuthenticated && token && (<SidebarItem onClick={() => logoutHandler()} icon={BiLogOut} label="Logout" />)}
+                    {isAuthenticated && token && (<SidebarItem onClick={() => logoutHandler()} icon={BiLogOut} label="Logout" auth />)}
                     <SidebarPostButton />
                 </div>
             </div>

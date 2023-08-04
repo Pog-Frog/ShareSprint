@@ -1,4 +1,5 @@
 export interface User {
+    toJSON(): any;
     _id: string;
     username: string;
     bio: string;
@@ -10,8 +11,11 @@ export interface User {
     created_at: Date;
     updated_at: Date;
     followers: string[]; // OR their ids only
+    followingCount: number;
     has_notifications: boolean;
     posts: string[];
     comments: string[];
     Notifications: string[];
+    coverImage: string;
+    profileImage: string;
 }
