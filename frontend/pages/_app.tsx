@@ -7,6 +7,7 @@ import { wrapper } from '@/redux/store'
 import { useStore } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react";
 import ToastMessage from '@/hooks/Toast'
+import EditModal from '@/components/modals/EditModal'
 
 
 export default wrapper.withRedux(({ Component, pageProps }: AppProps) => {
@@ -17,6 +18,7 @@ export default wrapper.withRedux(({ Component, pageProps }: AppProps) => {
       <PersistGate persistor={store.__persistor} loading={<div>Loading.........</div>}>
         <RegisterModal />
         <LoginModal />
+        <EditModal isOpen={false} onClose={function (): void {} } />
         <ToastMessage />
         <Layout>
           <Component {...pageProps} />

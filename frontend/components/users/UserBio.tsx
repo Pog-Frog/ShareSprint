@@ -6,6 +6,7 @@ import Button from "../Button";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/redux/reducers/auth.reducer";
 import { BiCalendar } from "react-icons/bi";
+import useEditModal from "@/hooks/useEditModal";
 
 interface UserBioProps {
     user: User;
@@ -13,6 +14,7 @@ interface UserBioProps {
 
 const UserBio: React.FC<UserBioProps> = ({ user }) => {
     const [currentUser, setCurrentUser] = useState({} as User);
+    const EditModal = useEditModal();
 
     const createdAt = useMemo(() => {
         if (user.createdAt) {
@@ -40,7 +42,7 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
             <div className="flex justify-end p-2">
                 <div className="flex flex-col items-center justify-center">
                     {currentUser._id === user._id ? (
-                        <Button secondary label="Edit Profile" onClick={() => { }} />
+                        <Button secondary label="Edit Profile" onClick={() => { EditModal.onOpen() }} />
 
                     ) : (
                         <Button label="Follow" onClick={() => { }} secondary />
@@ -67,7 +69,7 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
                         {user?.bio}
                     </p>
                     <div className="flex flex-row items-center gap-2 mt-4 text-neutral-500">
-                        <BiCalendar size={24}/> 
+                        <BiCalendar size={24} />
                         <p>Joined {createdAt}</p>
                     </div>
                 </div>

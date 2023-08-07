@@ -46,9 +46,9 @@ const Avatar: React.FC<AvatarProps> = ({ userId, isLarge, hasBorder }) => {
         `}
         >
             {user?.profileImage ? (
-                <Image fill style={{ objectFit: 'cover', borderRadius: '100%' }} src={`/images/${user.profileImage}`} layout="fill" objectFit="cover" alt='Profile image' onClick={onClick} />
+                <Image fill style={{ objectFit: 'cover', borderRadius: '100%' }} src={user.profileImage} alt='Profile image' onClick={onClick} />
             ) : (
-                <Image fill style={{ objectFit: 'cover', borderRadius: '100%' }} src={`/images/placeholder.png`} onClick={onClick} alt={'Profile image'} />
+                <Image fill style={{ objectFit: 'cover', borderRadius: '100%' }} src={`/images/placeholder.png`} alt='Profile image' onClick={onClick} />
             )}
         </div>
     );

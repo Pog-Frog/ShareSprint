@@ -22,7 +22,7 @@ export class UserService {
     }
 
     static async updateUser(userData: User, userId: any) {
-        return Network.fetch(UserEndpoint.getUserById.url.replace('userId', userId), {
+        return Network.fetch(UserEndpoint.updateUser.url + userId, {
             method: UserEndpoint.updateUser.method,
             body: JSON.stringify(userData)
         }, true);

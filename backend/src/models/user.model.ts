@@ -17,7 +17,7 @@ const UserSchema: Schema = new Schema({
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
     coverImage: { type: String, required: false },
-    profileImage: { type: Schema.Types.ObjectId, ref: 'Profile' }
+    profileImage: { type: String, required: false },
 }, {
     timestamps: true
 });

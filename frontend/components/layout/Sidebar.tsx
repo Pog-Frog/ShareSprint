@@ -7,9 +7,13 @@ import SidebarPostButton from './SidebarButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteEmail, deleteToken, selectAuthState } from '@/redux/reducers/auth.reducer';
 import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { showSuccess } from '@/redux/reducers/success.reducer';
 
 
 const Sidebar = () => {
+    const router = useRouter();
+
     const items = [
         {
             icon: BsHouseFill,
@@ -38,7 +42,9 @@ const Sidebar = () => {
     const logoutHandler = useCallback(() => {
         dispatch(deleteToken());
         dispatch(deleteEmail());
-    }, [dispatch]);
+        dispatch(showSuccess('Logged out successfully'));
+        router.reload();
+    }, [dispatch, router]);
 
     return (
         <div className="col-span-1 h-full pr-4 md:pr-6">

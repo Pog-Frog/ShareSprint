@@ -24,7 +24,6 @@ const LoginModal = () => {
   const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true);
-
       await AuthService.login({ email, password }).then((res) => {
         dispatch(showSuccess('You have successfully logged in!'))
         dispatch(setToken(res.token));

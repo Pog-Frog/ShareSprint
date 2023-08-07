@@ -24,9 +24,9 @@ const UserHero: React.FC<UserHeroProps> = ({ userId }) => {
         <div>
             <div className="bg-neutal-700 h-44 relative">
                 {user?.coverImage ? (
-                    <Image src={`/images/${user.coverImage}`} layout="fill" objectFit="cover" alt='Cover image' style={{ objectFit: 'cover' }} />
+                    <Image src={user.coverImage} fill objectFit="cover" alt='Cover image' style={{ objectFit: 'cover' }} />
                 ) : (
-                    <Image src={`/images/cover_placeholder.png`} layout="fill" objectFit="cover" alt='Cover image' style={{ objectFit: 'cover' }} />
+                    <Image src={`/images/cover_placeholder.png`} fill objectFit="cover" alt='Cover image' style={{ objectFit: 'cover' }} />
                 )}
                 <div className="absolute -bottom-16 left-4">
                     <Avatar userId={userId} isLarge hasBorder />

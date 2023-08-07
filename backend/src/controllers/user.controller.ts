@@ -20,7 +20,6 @@ export class UserController {
             if (currentId !== userId) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
-
             const updatedUser: User = await this.user.updateUser(userId, userData);
             res.status(200).json({ data: updatedUser, message: "updateUser" });
         } catch (error) {

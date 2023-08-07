@@ -1,5 +1,4 @@
 export interface User {
-    toJSON(): any;
     _id?: string;
     username?: string;
     bio?: string;
