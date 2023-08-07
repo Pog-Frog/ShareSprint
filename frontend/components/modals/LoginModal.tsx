@@ -7,7 +7,7 @@ import Input from "../Input";
 import Modal from "../Modal";
 import { COMPANY_NAME } from "@/config";
 import { AuthService } from "@/pages/api/services/auth.service";
-import { setEmail, setToken } from "@/redux/reducers/auth.reducer";
+import { setToken } from "@/redux/reducers/auth.reducer";
 import { useDispatch } from "react-redux";
 import { showSuccess } from "@/redux/reducers/success.reducer";
 import { showError } from "@/redux/reducers/error.reducer";
@@ -26,8 +26,7 @@ const LoginModal = () => {
       setIsLoading(true);
       await AuthService.login({ email, password }).then((res) => {
         dispatch(showSuccess('You have successfully logged in!'))
-        dispatch(setToken(res.token));
-        dispatch(setEmail(res.data.email))
+        dispatch(setToken(res.token))
         loginModal.onClose();
 
       }).catch((err) => {

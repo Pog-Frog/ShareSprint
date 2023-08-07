@@ -18,7 +18,6 @@ interface EditModalProps {
 const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose }) => {
 
     const dispatch = useDispatch();
-    const email = localStorage.getItem('email');
     const [userId, setUserId] = useState('');
     const [profileImage, setProfileImage] = useState('');
     const [coverImage, setCoverImage] = useState('');
@@ -28,10 +27,11 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose }) => {
     const router = useRouter();
 
     useEffect(() => {
-        if (email && !username) {
-            UserService.getUserByEmail(email).then((res) => {
+        if (!username) {
+            UserService.getCurrentUser().then((res) => {
                 console.log(res.data)
                 setUserId(res.data._id)
+                console.log(res.data._id)
                 setUsername(res.data.username)
                 setBio(res.data.bio)
                 setProfileImage(res.data.profileImage);
@@ -40,7 +40,7 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose }) => {
                 console.log(err)
             })
         }
-    }, [email, username])
+    }, [username])
 
     const [isLoading, setIsLoading] = useState(false);
 

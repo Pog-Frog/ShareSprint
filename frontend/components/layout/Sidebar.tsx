@@ -5,14 +5,31 @@ import SidebarLogo from './SidebarLogo';
 import SidebarItem from './SidebarItem';
 import SidebarPostButton from './SidebarButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteEmail, deleteToken, selectAuthState } from '@/redux/reducers/auth.reducer';
-import { useCallback } from 'react';
+import { deleteToken, selectAuthState } from '@/redux/reducers/auth.reducer';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { showSuccess } from '@/redux/reducers/success.reducer';
+import { User } from '@/pages/api/interfaces/user.interface';
+import { UserService } from '@/pages/api/services/user.service';
 
 
 const Sidebar = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(selectAuthState);
+    const token = localStorage.getItem('token');
+
+    const [user, setUser] = useState({} as User);
+
+    useEffect(() => {
+        if (token) {
+            UserService.getCurrentUser().then((res) => {
+                setUser(res.data)
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }, [setUser, token])
 
     const items = [
         {
@@ -30,18 +47,13 @@ const Sidebar = () => {
         {
             icon: FaUser,
             label: 'Profile',
-            href: '/user/123',
+            href: `/users/${user._id}`,
             auth: true,
         },
     ]
 
-    const dispatch = useDispatch();
-    const isAuthenticated = useSelector(selectAuthState);
-    const token = localStorage.getItem('token');
-
     const logoutHandler = useCallback(() => {
         dispatch(deleteToken());
-        dispatch(deleteEmail());
         dispatch(showSuccess('Logged out successfully'));
         router.reload();
     }, [dispatch, router]);
