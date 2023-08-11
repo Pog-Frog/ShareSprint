@@ -29,9 +29,7 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose }) => {
     useEffect(() => {
         if (!username) {
             UserService.getCurrentUser().then((res) => {
-                console.log(res.data)
                 setUserId(res.data._id)
-                console.log(res.data._id)
                 setUsername(res.data.username)
                 setBio(res.data.bio)
                 setProfileImage(res.data.profileImage);

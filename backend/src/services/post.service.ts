@@ -10,12 +10,12 @@ import { User } from "../interfaces/user.interface";
 @Service()
 export class PostService {
     public async findAllPosts(): Promise<Post[]> {
-        const posts: Post[] = await PostModel.find().populate('author').populate('comments').populate('likes');
+        const posts: Post[] = await PostModel.find().populate('comments').sort({createdAt: -1});
         return posts;
     }
 
     public async findPostById(postId: string): Promise<Post> {
-        const findPost: Post = await PostModel.findById(postId).populate('author').populate('comments').populate('likes');
+        const findPost: Post = await PostModel.findById(postId).populate('comments');
         if (!findPost) throw new HttpException(409, "Post not found");
         return findPost;
     }

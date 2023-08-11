@@ -36,7 +36,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, icon: Icon, href, onCl
     
 
     return (
-        <div onClick={handleClick} className="flex flex-row items-center">
+        <div onClick={handleClick} className="flex flex-row items-center pb-5">
             <div className="
                 relative
                 rounded-full 

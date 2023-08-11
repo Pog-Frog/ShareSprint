@@ -1,6 +1,7 @@
 import {Network} from "@/pages/api/network";
 import {Post} from "@/pages/api/interfaces/post.interface";
 import {PostEndpoint} from "@/pages/api/endpoints/post.endpoints";
+import { StringIterator } from "lodash";
 
 export class PostService {
     static async getPosts() {
@@ -9,7 +10,7 @@ export class PostService {
         }, true);
     }
 
-    static async getPostById(postId: string) {
+    static async getPostById(postId: any) {
         return Network.fetch(PostEndpoint.getPostById.url + postId, {
             method: PostEndpoint.getPostById.method,
         }, true);
@@ -35,10 +36,9 @@ export class PostService {
         }, true);
     }
 
-    static async updatePostLikes(postId: string, like: number) {
+    static async updatePostLikes(postId: string) {
         return Network.fetch(PostEndpoint.updatePostLikes.url + postId + '/likes', {
-            method: PostEndpoint.updatePostLikes.method,
-            body: JSON.stringify({"likes": like})
+            method: PostEndpoint.updatePostLikes.method
         }, true);
     }
 

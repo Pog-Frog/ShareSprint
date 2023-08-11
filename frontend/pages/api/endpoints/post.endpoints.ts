@@ -7,7 +7,7 @@ export const PostEndpoint = {
         method: 'GET'
     },
     getPostById: {
-        url: `${DOMAIN}/posts/`,
+        url: `${DOMAIN}/posts/id/`,
         method: 'GET'
     },
     createPost: {
@@ -23,7 +23,7 @@ export const PostEndpoint = {
         method: 'DELETE'
     },
     updatePostLikes: {
-        url: `${DOMAIN}/posts/id/${'likes'}/likes`,
+        url: `${DOMAIN}/posts/id/`,
         method: 'PUT'
     },
     getComments: {
