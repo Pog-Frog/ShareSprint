@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Button from "./Button"
 import { selectAuthState } from "@/redux/reducers/auth.reducer"
 import Avatar from "./Avatar"
+import usePosts from "@/hooks/usePosts"
 
 interface FormProps {
     placeholder: string
@@ -24,12 +25,12 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment }) => {
     const loginModal = useLoginModal()
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const isAuthenticated = useSelector(selectAuthState);
-    const [posts, setPosts] = useState<Post | null>(null)
+    const { mutate: mutatePosts } = usePosts();
 
     const [body, setBody] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const dispatch = useDispatch();
-    
+
 
     const onSubmit = useCallback(async () => {
         try {
@@ -44,21 +45,17 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment }) => {
                 dispatch(showError('Something went wrong'));
             })
             setBody("")
+            mutatePosts()
         } catch (err) {
             dispatch(showError('Something went wrong'));
         } finally {
             setIsLoading(false)
         }
-    }, [body, currentUser?._id, dispatch])
+    }, [body, currentUser?._id, dispatch, mutatePosts])
 
     useEffect(() => {
         UserService.getCurrentUser().then((res) => {
             setCurrentUser(res.data)
-        }).catch((err) => {
-            console.log(err)
-        })
-        PostService.getPosts().then((res) => {
-            setPosts(res.data)
         }).catch((err) => {
             console.log(err)
         })

@@ -10,6 +10,12 @@ export class PostService {
         }, true);
     }
 
+    static async getPostsByUserId(userId: string) {
+        return Network.fetch(PostEndpoint.getPostsByUserId.url + userId, {
+            method: PostEndpoint.getPostsByUserId.method,
+        }, true);
+    }
+
     static async getPostById(postId: any) {
         return Network.fetch(PostEndpoint.getPostById.url + postId, {
             method: PostEndpoint.getPostById.method,

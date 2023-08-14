@@ -23,18 +23,17 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
     }, [user.createdAt])
 
     const isAuthenticated = useSelector(selectAuthState);
-    const email = localStorage.getItem('email');
 
     useEffect(() => {
-        if (isAuthenticated && email) {
-            UserService.getUserByEmail(email).then((res) => {
+        if (isAuthenticated) {
+            UserService.getCurrentUser().then((res) => {
                 setCurrentUser(res.data)
             }).catch((err) => {
                 console.log(err)
             })
         }
 
-    }, [email, isAuthenticated, setCurrentUser])
+    }, [isAuthenticated, setCurrentUser])
 
 
     return (

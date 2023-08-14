@@ -24,8 +24,14 @@ export class PostService {
         const user: User = await UserModel.findOne({ username: username });
         if (!user) throw new HttpException(409, "User not found");
 
-        const posts: Post[] = await PostModel.find({ author: user._id }).populate('author').populate('comments').populate('likes');
+        const posts: Post[] = await PostModel.find({ author: user._id }).populate('comments').sort({createdAt: -1});
 
+        return posts;
+    }
+
+    public async findPostByUserId(userId: string): Promise<Post[]> {
+        const posts: Post[] = await PostModel.find({ author: userId }).populate('comments').sort({createdAt: -1});
+        if(!posts) throw new HttpException(409, "Posts not found");
         return posts;
     }
 

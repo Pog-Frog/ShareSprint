@@ -39,6 +39,18 @@ export class PostController {
         }
     }
 
+    public getPostsByUserId = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            console.log("getPostsByUserId");
+            const userId: string = req.params.userId;
+            const posts: Post[] = await this.post.findPostByUserId(userId);
+
+            res.status(200).json({ data: posts, message: "getPostByUserId" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     public createPost = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const postData: Post = req.body;

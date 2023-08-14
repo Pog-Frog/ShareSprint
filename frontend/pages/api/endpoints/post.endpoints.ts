@@ -6,6 +6,10 @@ export const PostEndpoint = {
         url: `${DOMAIN}/posts`,
         method: 'GET'
     },
+    getPostsByUserId: {
+        url: `${DOMAIN}/posts/user/id/`,
+        method: 'GET'
+    },
     getPostById: {
         url: `${DOMAIN}/posts/id/`,
         method: 'GET'
