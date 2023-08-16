@@ -13,19 +13,23 @@ import Button from "./Button"
 import { selectAuthState } from "@/redux/reducers/auth.reducer"
 import Avatar from "./Avatar"
 import usePosts from "@/hooks/usePosts"
+import usePost from "@/hooks/usePost"
+import { Comment } from "@/pages/api/interfaces/comment.interface"
 
 interface FormProps {
-    placeholder: string
-    isComment?: boolean
+    placeholder: string,
+    isComment?: boolean,
+    postId?: string;
 }
 
 
-const Form: React.FC<FormProps> = ({ placeholder, isComment }) => {
+const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
     const registerModal = useRegisterModal()
     const loginModal = useLoginModal()
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const isAuthenticated = useSelector(selectAuthState);
     const { mutate: mutatePosts } = usePosts();
+    const { mutate: mutatePost } = usePost(postId as string);
 
     const [body, setBody] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -33,25 +37,48 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment }) => {
 
 
     const onSubmit = useCallback(async () => {
-        try {
-            const Post: Post = {
-                body: body,
-                author: currentUser?._id
-            }
-            setIsLoading(true)
-            await PostService.createPost(Post).then((res) => {
-                dispatch(showSuccess('Post created successfully'));
-            }).catch((err) => {
+        if (!isComment) {
+            try {
+                const Post: Post = {
+                    body: body,
+                    author: currentUser?._id
+                }
+                setIsLoading(true)
+                await PostService.createPost(Post).then((res) => {
+                    dispatch(showSuccess('Post created successfully'));
+                }).catch((err) => {
+                    dispatch(showError('Something went wrong'));
+                })
+                setBody("")
+                mutatePosts()
+            } catch (err) {
                 dispatch(showError('Something went wrong'));
-            })
-            setBody("")
-            mutatePosts()
-        } catch (err) {
-            dispatch(showError('Something went wrong'));
-        } finally {
-            setIsLoading(false)
+            } finally {
+                setIsLoading(false)
+            }
+        } else {
+            try {
+                const comment: Comment = {
+                    body: body,
+                    post: postId as string,
+                    author: currentUser?._id
+                }
+                setIsLoading(true)
+                await PostService.createComment(postId as string, comment).then((res) => {
+                    dispatch(showSuccess('Comment created successfully'));
+                }).catch((err) => {
+                    dispatch(showError('Something went wrong'));
+                })
+                setBody("")
+                mutatePost()
+            } catch (error) {
+                dispatch(showError('Something went wrong'));
+            } finally {
+                setIsLoading(false)
+            }
+
         }
-    }, [body, currentUser?._id, dispatch, mutatePosts])
+    }, [body, currentUser?._id, dispatch, isComment, mutatePost, mutatePosts, postId])
 
     useEffect(() => {
         UserService.getCurrentUser().then((res) => {
@@ -95,7 +122,6 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment }) => {
                     </div>
                 </div>
             )}
-
         </div>
     )
 }

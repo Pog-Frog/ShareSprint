@@ -3,13 +3,14 @@ import axios from 'axios';
 import { PostEndpoint } from '@/pages/api/endpoints/post.endpoints';
 
 
-const usePosts = (userId?: string) => {
+const usePost = (postId?: string) => {
 
   const fetcher = async (url: string) => await axios.get(url).then((res) => res.data.data);
 
-  const url = userId ? `${PostEndpoint.getPostsByUserId.url}${userId}` : PostEndpoint.getPosts.url;
+  const url = postId ? `${PostEndpoint.getPostById.url}${postId}` : null;
 
   const { data, error, isLoading, mutate } = useSWR(url, fetcher);
+  
 
   return {
     data,
@@ -19,4 +20,4 @@ const usePosts = (userId?: string) => {
   }
 };
 
-export default usePosts;
+export default usePost;

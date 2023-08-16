@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { formatDistanceToNowStrict } from "date-fns"
 import Avatar from "./Avatar"
-import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai"
+import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from "react-icons/ai"
 import { useDispatch, useSelector } from "react-redux"
 import { selectAuthState } from "@/redux/reducers/auth.reducer"
 import { PostService } from "@/pages/api/services/post.service"
@@ -42,11 +42,11 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
 
     const onLike = useCallback(async (event: any) => {
         const getLikeStatus = () => {
-            if(postData.likes !== undefined && currentUser?._id !== undefined) {
-                for(let i = 0; i < postData.likes.length; i++) {
-                    if(postData.likes[i] === currentUser?._id) {
+            if (postData.likes !== undefined && currentUser?._id !== undefined) {
+                for (let i = 0; i < postData.likes.length; i++) {
+                    if (postData.likes[i] === currentUser?._id) {
                         return true
-                    } 
+                    }
                 }
             }
             return false
@@ -54,17 +54,16 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
 
         event.stopPropagation()
 
-        if(!isAuthenticated) {
+        if (!isAuthenticated) {
             loginModal.onOpen()
             return
         } else {
-            if((postData.likes !== undefined)&& currentUser?._id !== undefined) {
-                if(postData.likes.length == 0){
-                    console.log('here')
+            if ((postData.likes !== undefined) && currentUser?._id !== undefined) {
+                if (postData.likes.length == 0) {
                     dispatch(showSuccess('Post liked'));
                     setLiked(true)
                 } else {
-                    if(getLikeStatus()) {
+                    if (getLikeStatus()) {
                         dispatch(showSuccess('Post unliked'));
                         setLiked(false)
                     } else {
@@ -72,21 +71,21 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
                         setLiked(true)
                     }
                 }
-                
+
             }
             await PostService.updatePostLikes(data._id).then((res) => {
-                
-                PostService.getPostById(data._id).then((res) => { 
+
+                PostService.getPostById(data._id).then((res) => {
                     setData(res.data)
                 }).catch((err) => {
                     console.log(err)
                 })
-                
+
             }).catch((err) => {
                 dispatch(showError('Something went wrong'));
             })
         }
-        
+
     }, [currentUser?._id, data._id, dispatch, isAuthenticated, loginModal, postData.likes])
 
     const createdAt = useMemo(() => {
@@ -106,9 +105,9 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
             console.log(err)
         })
 
-        if((postData.likes !== undefined)&& currentUser?._id !== undefined) {
-            for(let i = 0; i < postData.likes.length; i++) {
-                if(postData.likes[i] === currentUser?._id) {
+        if ((postData.likes !== undefined) && currentUser?._id !== undefined) {
+            for (let i = 0; i < postData.likes.length; i++) {
+                if (postData.likes[i] === currentUser?._id) {
                     setLiked(true)
                     break
                 }
@@ -123,7 +122,7 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
                 <div>
                     <div className="flex flex-row item-center gap-2">
                         <p className="text-white font-semibold cursor-pointer hover:underline" onClick={gotoUser}>
-                          {user?.username}  
+                            {user?.username}
                         </p>
                         <span className="text-neutral-500 cursor-pointer hover:underline hidden md:block" onClick={gotoUser}>
                             @{user?.email}
@@ -137,21 +136,21 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
                     </div>
                     <div className="flex flex-row items-center mt-3 gap-10">
                         <div className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer hover:text-sky-500 transition">
-                            <AiOutlineMessage size={20}/>
+                            <AiOutlineMessage size={20} />
                             <p>
-                              {postData.comments ? (postData.comments.length) : (0)} 
+                                {postData.comments ? (postData.comments.length) : (0)}
                             </p>
                         </div>
                         <div className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer hover:text-red-500 transition" onClick={onLike}>
                             {
                                 liked ? (
-                                    <AiOutlineHeart size={20} color="red"/>
+                                    <AiFillHeart size={20} color="red" />
                                 ) : (
-                                    <AiOutlineHeart size={20}/>
+                                    <AiOutlineHeart size={20} />
                                 )
                             }
                             <p>
-                              {postData.likes ? (postData.likes.length) : (0)}  
+                                {postData.likes ? (postData.likes.length) : (0)}
                             </p>
                         </div>
                     </div>

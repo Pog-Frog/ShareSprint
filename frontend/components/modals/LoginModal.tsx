@@ -11,6 +11,7 @@ import { setToken } from "@/redux/reducers/auth.reducer";
 import { useDispatch } from "react-redux";
 import { showSuccess } from "@/redux/reducers/success.reducer";
 import { showError } from "@/redux/reducers/error.reducer";
+import { useRouter } from "next/router";
 
 const LoginModal = () => {
   const loginModal = useLoginModal();
@@ -20,6 +21,7 @@ const LoginModal = () => {
   const [email, SetEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const onSubmit = useCallback(async () => {
     try {
@@ -39,10 +41,11 @@ const LoginModal = () => {
 
     } finally {
       setIsLoading(false);
+      router.reload();
 
     }
 
-  }, [email, password, loginModal, dispatch]);
+  }, [email, password, dispatch, loginModal, router]);
 
   const onToggle = useCallback(() => {
     loginModal.onClose();

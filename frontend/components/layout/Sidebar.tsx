@@ -63,7 +63,7 @@ const Sidebar = () => {
             <div className="flex flex-col items-end">
                 <div className="space-y-2 lg:w-[230px]">
                     <SidebarLogo />
-                    <div className='pt-20'>
+                    <div className='pt-5'>
                         {items.map((item) => (
                             <SidebarItem
                                 key={item.label}

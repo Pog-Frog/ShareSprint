@@ -15,7 +15,8 @@ export class PostService {
     }
 
     public async findPostById(postId: string): Promise<Post> {
-        const findPost: Post = await PostModel.findById(postId).populate('comments');
+        const findPost: Post = await PostModel.findById(postId).populate('comments').sort({createdAt: -1});
+        
         if (!findPost) throw new HttpException(409, "Post not found");
         return findPost;
     }

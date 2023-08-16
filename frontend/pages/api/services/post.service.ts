@@ -53,4 +53,11 @@ export class PostService {
             method: PostEndpoint.getComments.method,
         }, true);
     }
+
+    static async createComment(postId: string, comment: any) {
+        return Network.fetch(PostEndpoint.createComment.url + postId + '/comments', {
+            method: PostEndpoint.createComment.method,
+            body: JSON.stringify(comment)
+        }, true);
+    }
 }

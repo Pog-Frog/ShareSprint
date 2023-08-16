@@ -35,5 +35,10 @@ export const UserEndpoint = {
     getCurrentUser: {
         url: `${DOMAIN}/users/user/me`,
         method: 'GET'
-    }
+    },
+
+    followUser: {
+        url: `${DOMAIN}/users/follow/`,
+        method: 'POST'
+    },
 }

@@ -1,12 +1,14 @@
 import { User } from "@/pages/api/interfaces/user.interface";
 import { UserService } from "@/pages/api/services/user.service";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import Button from "../Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectAuthState } from "@/redux/reducers/auth.reducer";
 import { BiCalendar } from "react-icons/bi";
 import useEditModal from "@/hooks/useEditModal";
+import { showSuccess } from "@/redux/reducers/success.reducer";
+import useLoginModal from "@/hooks/useLoginModal";
 
 interface UserBioProps {
     user: User;
@@ -14,7 +16,9 @@ interface UserBioProps {
 
 const UserBio: React.FC<UserBioProps> = ({ user }) => {
     const [currentUser, setCurrentUser] = useState({} as User);
+    const [isFollowing, setIsFollowing] = useState(false);
     const EditModal = useEditModal();
+    const loginModal = useLoginModal();
 
     const createdAt = useMemo(() => {
         if (user.createdAt) {
@@ -23,6 +27,7 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
     }, [user.createdAt])
 
     const isAuthenticated = useSelector(selectAuthState);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -31,9 +36,30 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
             }).catch((err) => {
                 console.log(err)
             })
+            if (user !== undefined && user.followers !== undefined && currentUser._id !== undefined) {
+                setIsFollowing(user.followers.includes(currentUser._id))
+            }
         }
 
-    }, [isAuthenticated, setCurrentUser])
+    }, [currentUser._id, isAuthenticated, setCurrentUser, user, user.followers])
+
+    const onFollow = useCallback(() => {
+        if (!isAuthenticated) {
+            return loginModal.onOpen();
+        } else {
+            UserService.followUser(user._id).then((res) => {
+                if (isFollowing) {
+                    dispatch(showSuccess("Unfollowed user"))
+                    setIsFollowing(false)
+                } else {
+                    dispatch(showSuccess("Followed user"))
+                    setIsFollowing(true)
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }, [dispatch, isAuthenticated, isFollowing, loginModal, user._id])
 
 
     return (
@@ -44,7 +70,13 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
                         <Button secondary label="Edit Profile" onClick={() => { EditModal.onOpen() }} />
 
                     ) : (
-                        <Button label="Follow" onClick={() => { }} secondary />
+                        {
+                            ...isFollowing ? (
+                                <Button secondary label="Unfollow" onClick={onFollow} danger={true} />
+                            ) : (
+                                <Button secondary label="Follow" onClick={onFollow} />
+                            )
+                        }
                     )}
 
                 </div>

@@ -31,7 +31,11 @@ export const PostEndpoint = {
         method: 'PUT'
     },
     getComments: {
-        url: `${DOMAIN}/posts/id/${'postId'}/comments`,
+        url: `${DOMAIN}/posts/id/${'postId'}/comments`, ///id/:postId/comments
         method: 'GET'
+    },
+    createComment: {
+        url: `${DOMAIN}/posts/id/`, ///id/:postId/comments
+        method: 'POST'
     },
 }

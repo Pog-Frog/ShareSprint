@@ -45,4 +45,10 @@ export class UserService {
             method: UserEndpoint.getCurrentUser.method,
         }, true);
     }
+
+    static async followUser(userId: any) {
+        return Network.fetch(UserEndpoint.followUser.url + userId, {
+            method: UserEndpoint.followUser.method,
+        }, true);
+    }
 }
