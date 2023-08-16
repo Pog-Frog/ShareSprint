@@ -3,6 +3,7 @@ export interface Notification {
     body: string;
     receiver: string;
     status: boolean; //true if the notification is read
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    new?: boolean;
 }

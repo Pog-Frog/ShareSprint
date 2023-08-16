@@ -15,6 +15,7 @@ import Avatar from "./Avatar"
 import usePosts from "@/hooks/usePosts"
 import usePost from "@/hooks/usePost"
 import { Comment } from "@/pages/api/interfaces/comment.interface"
+import useUser from "@/hooks/useUser"
 
 interface FormProps {
     placeholder: string,
@@ -27,6 +28,7 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
     const registerModal = useRegisterModal()
     const loginModal = useLoginModal()
     const [currentUser, setCurrentUser] = useState<User | null>(null)
+    const { mutate: mutateUser } = useUser();
     const isAuthenticated = useSelector(selectAuthState);
     const { mutate: mutatePosts } = usePosts();
     const { mutate: mutatePost } = usePost(postId as string);
@@ -37,6 +39,7 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
 
 
     const onSubmit = useCallback(async () => {
+        mutateUser()
         if (!isComment) {
             try {
                 const Post: Post = {
@@ -78,7 +81,7 @@ const Form: React.FC<FormProps> = ({ placeholder, isComment, postId }) => {
             }
 
         }
-    }, [body, currentUser?._id, dispatch, isComment, mutatePost, mutatePosts, postId])
+    }, [body, currentUser?._id, dispatch, isComment, mutatePost, mutatePosts, mutateUser, postId])
 
     useEffect(() => {
         UserService.getCurrentUser().then((res) => {

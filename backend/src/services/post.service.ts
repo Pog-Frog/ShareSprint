@@ -6,6 +6,8 @@ import { Comment } from "../interfaces/comment.interface";
 import { Post } from "../interfaces/post.interface";
 import { UserModel } from "../models/user.model";
 import { User } from "../interfaces/user.interface";
+import { Notification } from "../interfaces/notificaiton.interface";
+import { NotificationModel } from "../models/notification.model";
 
 @Service()
 export class PostService {
@@ -83,6 +85,21 @@ export class PostService {
             }
         } else {
             findPost.likes.push(userId);
+            const user = await UserModel.findById(userId);
+            
+            if(findPost.author.toString() !== userId) {
+                const notification: Notification = {
+                    receiver: findPost.author,
+                    body: `${user.username} liked your post`,
+                }
+                
+                const newNotification = await NotificationModel.create(notification);
+                if(!newNotification) throw new HttpException(409, "Notification not created");
+                
+                const receiver = await UserModel.findById(findPost.author);
+                receiver.has_notifications = true;
+                await receiver.save();
+            }
         }
         findPost.save();
 

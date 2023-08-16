@@ -1,0 +1,56 @@
+# Find All api/posts
+GET http://localhost:8080/api/posts
+
+###
+
+#Find Post by id
+GET http://localhost:8080/api/posts/id/64c80b5f3a6132b868f48fad
+
+###
+
+#Get all posts by username
+GET http://localhost:8080/api/posts/user/lol2
+
+###
+
+#Create Post
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+
+{
+    "body": "asdasd 2"
+}
+
+###
+
+#Delete Post by id
+DELETE http://localhost:8080/api/posts/id/64c8079adad9e8c2104c02e9
+
+###
+
+#Update Post by id
+PUT http://localhost:8080/api/posts/id/64c8079adad9e8c2104c02e9
+Content-Type: application/json
+
+{
+    "body": "asasdasd"
+}
+
+###
+
+#Update Post Likes by id
+PUT http://localhost:8080/api/posts/id/64d2f5f47c0e3efdd101c2dd/likes
+
+
+###
+
+#Add comment to Post by id
+POST http://localhost:8080/api/posts/id/64d2f5f47c0e3efdd101c2dd/comments
+Content-Type: application/json
+
+{
+    "body": "Comment 1",
+    "author": "64c53722197f9456d1e9db70",
+    "post": "64c53d4dfa1cb56acf36fbbe"
+}
+###

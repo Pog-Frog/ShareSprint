@@ -11,17 +11,16 @@ const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): R
         const isAuthenticated = useSelector(selectAuthState);
         const token = localStorage.getItem('token');
         const dispatch = useDispatch();
-        const loginModal = useLoginModal();
 
         useEffect(() => {
             if (!isAuthenticated || !token) {
                 dispatch(showError('You need to be logged in to access this page'))
-                loginModal.onOpen();
+                
                 router.push({
                     pathname: '/',
                 });
             }
-        }, [dispatch, isAuthenticated, loginModal, router, token]);
+        }, [dispatch, isAuthenticated, router, token]);
 
         return isAuthenticated ? <WrappedComponent {...props} /> : null;
     };

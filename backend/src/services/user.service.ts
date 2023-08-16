@@ -2,6 +2,8 @@ import { Service } from "typedi";
 import { HttpException } from "../exceptions/httpsExceptions";
 import { UserModel } from "../models/user.model";
 import { User } from "../interfaces/user.interface";
+import { Notification } from "../interfaces/notificaiton.interface";
+import { NotificationModel } from "../models/notification.model";
 
 
 @Service()
@@ -37,7 +39,7 @@ export class UserService {
     }
 
     public async findUserById(userId: string): Promise<User> {
-        let findUser: User = await UserModel.findById(userId).populate('posts').populate('comments').populate('notifications');
+        let findUser: User = await UserModel.findById(userId).populate('posts').populate('comments');
         const followingCount  = await UserModel.countDocuments({followers: userId});
         findUser = findUser.toJSON();
         findUser.followingCount = followingCount;
@@ -47,7 +49,7 @@ export class UserService {
     }
 
     public async findUserByEmail(email: string): Promise<User> {
-        let findUser: User = await UserModel.findOne({ email: email }).populate('posts').populate('comments').populate('notifications');
+        let findUser: User = await UserModel.findOne({ email: email }).populate('posts').populate('comments');
         const followingCount  = await UserModel.countDocuments({followers: findUser._id});
         findUser = findUser.toJSON();
         findUser.followingCount = followingCount;
@@ -57,7 +59,7 @@ export class UserService {
     }
 
     public async getAllUsers(): Promise<User[]> {
-        const users: User[] = await UserModel.find().populate('posts').populate('comments').populate('notifications');
+        const users: User[] = await UserModel.find().populate('posts').populate('comments');
         if (!users) throw new HttpException(409, "Users not found");
 
         return users;
@@ -85,6 +87,17 @@ export class UserService {
         }
 
         getUser.followers.push(getFollower._id);
+        await getUser.save();
+
+        const notification: Notification = {
+            receiver: getUser._id,
+            body: `${getFollower.username} started following you`,
+        }
+        
+        const newNotification = await NotificationModel.create(notification);
+        if(!newNotification) throw new HttpException(409, "Internal server error");
+
+        getUser.has_notifications = true;
         await getUser.save();
 
         return "User followed";

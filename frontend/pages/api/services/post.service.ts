@@ -1,7 +1,6 @@
 import {Network} from "@/pages/api/network";
 import {Post} from "@/pages/api/interfaces/post.interface";
 import {PostEndpoint} from "@/pages/api/endpoints/post.endpoints";
-import { StringIterator } from "lodash";
 
 export class PostService {
     static async getPosts() {

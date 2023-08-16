@@ -15,7 +15,6 @@ const UserSchema: Schema = new Schema({
     has_notifications: { type: Boolean, default: false, required: false },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-    notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
     coverImage: { type: String, required: false },
     profileImage: { type: String, required: false },
 }, {

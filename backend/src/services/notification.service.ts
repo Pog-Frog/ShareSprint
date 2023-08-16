@@ -12,21 +12,33 @@ export class NotificationService {
 
         const createdNotification: Notification = await NotificationModel.create({ ...notificationData });
         if(!createdNotification) throw new HttpException(409, "Notification not created");
-
-        findUser.Notifications.push(createdNotification._id);
+        
+        findUser.has_notifications = true;
         await findUser.save();
         return createdNotification;
     }
 
-    public async updateNotification(notificationId: string, notificationData: Notification, currentId: string): Promise<Notification> {
-        const findNotification: Notification = await NotificationModel.findById(notificationId);
-        if (!findNotification) throw new HttpException(409, "Notification not found");
+    public async getNotifications(userId: string): Promise<Notification[]> {
+        const user = await UserModel.findById(userId);
+        if(!user) throw new HttpException(409, "User not found");
 
-        if (findNotification.receiver.toString() !== currentId) throw new HttpException(409, "Unauthorized");
+        const notifications: Notification[] = await NotificationModel.find({ receiver: userId }).sort({ createdAt: -1 });
+        if(!notifications) throw new HttpException(409, "Notifications not found");
 
-        const updateNotification: Notification = await NotificationModel.findByIdAndUpdate(notificationId, { ...notificationData }, { new: true });
-        if(!updateNotification) throw new HttpException(409, "Notification not updated");
+        for(let i = 0; i < notifications.length; i++) {
+            if(!notifications[i].status) {
+                notifications[i].status = true;
+                await notifications[i].save();
+                notifications[i] = notifications[i].toJSON();
+                notifications[i].new = true;
+            }
+        }
 
-        return updateNotification;
+        if(user.has_notifications) {
+            user.has_notifications = false;
+            await user.save();
+        }
+
+        return notifications;
     }
 }

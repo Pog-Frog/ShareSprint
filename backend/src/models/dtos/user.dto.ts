@@ -49,10 +49,6 @@ export class CreateUserDto {
 
     @IsString()
     @IsOptional()
-    Notifications: Notification[];
-
-    @IsString()
-    @IsOptional()
     coverImage: string;
 
     @IsString()
@@ -116,10 +112,6 @@ export class UpdateUserDto {
     @IsString()
     @IsOptional()
     comments: Comment[];
-
-    @IsString()
-    @IsOptional()
-    Notifications: Notification[];
 
     @IsString()
     @IsOptional()

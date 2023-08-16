@@ -18,15 +18,11 @@ export class NotificationController {
         }
     }
 
-    public updateNotification = async (req: Request, res: Response, next: NextFunction) => {
+    public getNotifications = async (req: RequestWithUser, res: Response, next: NextFunction) => {
         try {
-            const notificationId: string = req.params.notificationId;
-            const notificationData: Notification = req.body;
-
             const currentId = await TokenUtils.getUserIDFromToken(req);
-
-            const updatedNotification: Notification = await this.notification.updateNotification(notificationId, notificationData, currentId);
-            res.status(200).json({ data: updatedNotification, message: "updateNotification" });
+            const notifications: Notification[] = await this.notification.getNotifications(currentId);
+            res.status(200).json({ data: notifications, message: "getNotifications" });
         } catch (error) {
             next(error);
         }

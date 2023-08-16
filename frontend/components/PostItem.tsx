@@ -12,6 +12,7 @@ import { selectAuthState } from "@/redux/reducers/auth.reducer"
 import { PostService } from "@/pages/api/services/post.service"
 import { showSuccess } from "@/redux/reducers/success.reducer"
 import { showError } from "@/redux/reducers/error.reducer"
+import useUser from "@/hooks/useUser"
 
 
 interface PostItemProps {
@@ -28,6 +29,7 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
 
 
     const [user, setUser] = useState<User | null>(null)
+    const { mutate: mutateUser } = useUser();
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const isAuthenticated = useSelector(selectAuthState);
 
@@ -41,6 +43,7 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
     }, [data._id, router])
 
     const onLike = useCallback(async (event: any) => {
+        mutateUser()
         const getLikeStatus = () => {
             if (postData.likes !== undefined && currentUser?._id !== undefined) {
                 for (let i = 0; i < postData.likes.length; i++) {
@@ -86,7 +89,7 @@ const PostItem: React.FC<PostItemProps> = ({ data, userId }) => {
             })
         }
 
-    }, [currentUser?._id, data._id, dispatch, isAuthenticated, loginModal, postData.likes])
+    }, [currentUser?._id, data._id, dispatch, isAuthenticated, loginModal, mutateUser, postData.likes])
 
     const createdAt = useMemo(() => {
         return formatDistanceToNowStrict(new Date(data.createdAt))
