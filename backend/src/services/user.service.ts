@@ -65,6 +65,14 @@ export class UserService {
         return users;
     }
 
+    public async getUsersToFollow(currentId: string): Promise<User[]> {
+        const users: User[] = await UserModel.find();
+        const filteredUsers = users.filter(user => user._id.toString() !== currentId && !user.followers.includes(currentId));
+        if(!filteredUsers) throw new HttpException(409, "Users not found");
+
+        return filteredUsers;
+    }
+
     public async followUser(userId: string, followerId: string): Promise<string> {
         const getUser = await UserModel.findById(userId);
         if (!getUser) throw new HttpException(409, "User not found");

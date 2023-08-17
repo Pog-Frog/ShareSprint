@@ -9,6 +9,7 @@ import { BiCalendar } from "react-icons/bi";
 import useEditModal from "@/hooks/useEditModal";
 import { showSuccess } from "@/redux/reducers/success.reducer";
 import useLoginModal from "@/hooks/useLoginModal";
+import useUsersToFollow from "@/hooks/useUsersToFollow";
 
 interface UserBioProps {
     user: User;
@@ -19,6 +20,7 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
     const [isFollowing, setIsFollowing] = useState(false);
     const EditModal = useEditModal();
     const loginModal = useLoginModal();
+    const { mutate: mutateUsersToFollow} = useUsersToFollow();
 
     const createdAt = useMemo(() => {
         if (user.createdAt) {
@@ -55,11 +57,12 @@ const UserBio: React.FC<UserBioProps> = ({ user }) => {
                     dispatch(showSuccess("Followed user"))
                     setIsFollowing(true)
                 }
+                mutateUsersToFollow();
             }).catch((err) => {
                 console.log(err)
             })
         }
-    }, [dispatch, isAuthenticated, isFollowing, loginModal, user._id])
+    }, [dispatch, isAuthenticated, isFollowing, loginModal, mutateUsersToFollow, user._id])
 
 
     return (

@@ -41,3 +41,8 @@ Content-Type: application/json
 }
 
 ###
+
+# Get other users to follow
+GET http://localhost:8080/api/users/user/others
+
+###

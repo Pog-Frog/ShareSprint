@@ -7,6 +7,11 @@ export const UserEndpoint = {
         method: 'GET'
     },
 
+    getUsersToFollow: {
+        url: `${DOMAIN}/users/user/others`,
+        method: 'GET'
+    },
+
     getUserById: {
         url: `${DOMAIN}/users/id/`,
         method: 'GET'

@@ -9,6 +9,12 @@ export class UserService {
         }, true);
     }
 
+    static async getUsersToFollow() {
+        return Network.fetch(UserEndpoint.getUsersToFollow.url, {
+            method: UserEndpoint.getUsers.method,
+        }, true);
+    }
+
     static async getUserById(userId: any) {
         return Network.fetch(UserEndpoint.getUserById.url + userId, {
             method: UserEndpoint.getUserById.method,

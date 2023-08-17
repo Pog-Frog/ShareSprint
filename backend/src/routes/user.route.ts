@@ -26,6 +26,7 @@ export class UserRoute implements Routes {
         this.router.get(`${this.path}/verify-email/:email/:token`, alreadyAuthorizedMiddleware, this.userController.verifyUser);
         this.router.get(`${this.path}/user/me`, authMiddleware, this.userController.getCurrentUser);
         this.router.get(`${this.path}`, this.userController.getAllUsers);
+        this.router.get(`${this.path}/user/others`, authMiddleware, this.userController.getUsersToFollow);
         this.router.post(`${this.path}/follow/:userId`, authMiddleware, this.userController.followUser);
     }
 }

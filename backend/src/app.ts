@@ -11,7 +11,6 @@ import { PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from './config';
 import { dbConnection } from './database';
 import { Routes } from './interfaces/route.interface';
 import ErrorMiddleware from "./middlewares/error.middleware";
-import http from 'http';
 
 export class App {
     public app: express.Application;

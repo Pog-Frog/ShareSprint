@@ -91,6 +91,16 @@ export class UserController {
         }
     }
 
+    public getUsersToFollow = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const currentId = await TokenUtils.getUserIDFromToken(req);
+            const users: User[] = await this.user.getUsersToFollow(currentId);
+            res.status(200).json({ data: users, message: "getUsersToFollow" });
+        } catch (error) {
+            next(error)
+        }   
+    }
+
 
     public getCurrentUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
         try {
