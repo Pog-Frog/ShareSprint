@@ -1,0 +1,27 @@
+version: '1'
+services:
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    links:
+      - backend
+    restart: always
+
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8080:8080"
+    restart: always
+    links:
+      - db
+
+  db: 
+    image: mongo-express
+    container_name: db
+    ports:
+      - "27017:27017"
+    restart: always
