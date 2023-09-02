@@ -15,7 +15,7 @@
 `First`, install the dependencies, by running this command in the root directory:
 
 ```bash
-npm run install
+npm i
 ```
 
 `Second`, Fill in the environment variables in the `.env` file in the frontend and backend folders respectively:
@@ -31,7 +31,7 @@ npm run install
 `Third`, you can run the application both the frontend and the backend concurrently, in development mode by running:
 
 ```bash
-npm run dev
+npm run build; npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
